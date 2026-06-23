@@ -5,7 +5,10 @@ pipeline {
     stage('Prepare') {
       steps {
         sh """
-          cd /Chapter08/sample1
+          pwd
+          ls -la
+          find . -type d | head -50
+          cd Chapter08/sample1
           chmod +x gradlew
         """
       }
@@ -13,7 +16,7 @@ pipeline {
     stage('Clean') {
       steps {
         sh """
-          cd /Chapter08/sample1
+          cd Chapter08/sample1
           ./gradlew clean
         """
       }
@@ -21,7 +24,7 @@ pipeline {
     stage('Run Tests') {
       steps {
         sh """
-          cd /Chapter08/sample1
+          cd Chapter08/sample1
           ./gradlew test
         """
       }
@@ -29,7 +32,7 @@ pipeline {
     stage('Code Coverage') {
       steps {
         sh """
-          cd /Chapter08/sample1
+          cd Chapter08/sample1
           ./gradlew jacocoTestCoverageVerification
         """
       }
@@ -38,14 +41,14 @@ pipeline {
 stage('Checkstyle') {
   steps {
     sh """
-      cd /Chapter08/sample1
+      cd Chapter08/sample1
       ./gradlew checkstyleMain
     """
   }
   post {
     always {
       publishHTML(target: [
-        reportDir: '/Chapter08/sample1/build/reports/checkstyle',
+        reportDir: 'Chapter08/sample1/build/reports/checkstyle',
         reportFiles: 'main.html',
         reportName: "jacoco checkstyle"
       ])
