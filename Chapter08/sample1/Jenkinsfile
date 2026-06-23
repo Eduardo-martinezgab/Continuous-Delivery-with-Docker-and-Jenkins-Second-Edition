@@ -1,30 +1,51 @@
 pipeline {
   agent any
   stages {
+    
+    stage('Prepare') {
+      steps {
+        sh """
+          cd /Chapter08/sample1
+          chmod +x gradlew
+        """
+      }
+    }
     stage('Clean') {
       steps {
-        sh "./gradlew clean"
+        sh """
+          cd /Chapter08/sample1
+          ./gradlew clean
+        """
       }
     }
     stage('Run Tests') {
       steps {
-        sh "./gradlew test"
+        sh """
+          cd /Chapter08/sample1
+          ./gradlew test
+        """
       }
     }
     stage('Code Coverage') {
       steps {
-        sh "./gradlew jacocoTestCoverageVerification"
+        sh """
+          cd /Chapter08/sample1
+          ./gradlew jacocoTestCoverageVerification
+        """
       }
     }
     
 stage('Checkstyle') {
   steps {
-    sh "./gradlew checkstyleMain"
+    sh """
+      cd /Chapter08/sample1
+      ./gradlew checkstyleMain
+    """
   }
   post {
     always {
       publishHTML(target: [
-        reportDir: 'build/reports/checkstyle',
+        reportDir: '/Chapter08/sample1/build/reports/checkstyle',
         reportFiles: 'main.html',
         reportName: "jacoco checkstyle"
       ])
